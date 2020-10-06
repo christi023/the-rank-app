@@ -3,12 +3,53 @@ import { MTRow, MTColumn } from 'mt-ui';
 import ExcelDropzone from './excel-dropzone.jsx';
 import users from './users';
 import scores from './scores';
+import utils from './components/utils/utils';
 // styles
 
 export default class Main extends React.Component {
+  constructor(props) {
+    super(props);
+    //state
+    this.state = {
+      jsonData: '',
+      loadingData: '',
+    };
+    // bind
+    this.handleSheetData = this.handleSheetData.bind(this);
+    this.handleSheetStartupData = this.handleSheetStartupData.bind(this);
+  }
+
   handleSheetData(data) {
     // replace this log with actual handling of the data
     console.log(data);
+  }
+
+  // handleSheetStartupData
+  handleSheetStartupData() {
+    let iniItems;
+    let scoreItems = { scores };
+
+    iniItems = users.map((user, key) => {
+      let scoreData;
+      let maxResultUser;
+
+      scoreData = scoreItems.scores.filter((scoreId) => scoreId.userId === user._id);
+      maxResultUser = scoreData.sort((a, b) => a.score - b.score).reverse()[0];
+
+      return <div key={key}>{user.name + ' - ' + maxResultUser.score}</div>;
+    });
+
+    // Set highest scores
+    this.setState({
+      loadingData: iniItems.sort(
+        (
+          a,
+          b, // render props takes children
+        ) =>
+          a.props.children.split('-')[1].trimStart() -
+          b.props.children.split('-')[1].trimStart().reverse(), // strip white spaces
+      ),
+    });
   }
 
   render() {

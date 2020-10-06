@@ -6,67 +6,12 @@ import scores from './scores';
 // styles
 
 export default class Main extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      jsonData: '',
-      loadingData: '',
-    };
-    this.handleSheetData = this.handleSheetData.bind(this);
-    this.handleSheetStartupData = this.handleSheetStartupData.bind(this);
-  }
-
-  componentDidMount() {
-    this.handleSheetStartupData();
-  }
-
   handleSheetData(data) {
     // replace this log with actual handling of the data
-    // console.log(data)
-
-    // Sort data ascending or descending
-    data.sort((a, b) => a.score - b.score).reverse();
-
-    // Set data to jsonData state variable
-    this.setState({
-      jsonData: data,
-    });
-  }
-
-  handleSheetStartupData() {
-    let iniItems;
-    let scoreItems = { scores };
-
-    iniItems = users.map((user, key) => {
-      let scoreData;
-      let maxResultUser;
-
-      scoreData = scoreItems.scores.filter((scoreId) => scoreId.userId === user._id);
-      maxResultUser = scoreData.sort((a, b) => a.score - b.score).reverse()[0];
-
-      return <div key={key}>{user.name + ' - ' + maxResultUser.score}</div>;
-    });
-
-    // Set highest scores
-    this.setState({
-      loadingData: iniItems
-        .sort(
-          (a, b) =>
-            a.props.children.split('-')[1].trimStart() - b.props.children.split('-')[1].trimStart(),
-        )
-        .reverse(),
-    });
+    console.log(data);
   }
 
   render() {
-    let items;
-    // check if jsonData is null if not return items with map funtion
-    if (this.state.jsonData) {
-      items = this.state.jsonData.map((data, key) => {
-        return <div key={key}>{data.name + ' - ' + data.score}</div>;
-      });
-    }
-
     return (
       <div className="container container--centered">
         <h1 className="m-t">Mediatool exercise</h1>
@@ -101,22 +46,6 @@ export default class Main extends React.Component {
                 </li>
                 <li>Width and offset is set in percent</li>
               </ul>
-            </div>
-          </MTColumn>
-        </MTRow>
-
-        <MTRow>
-          <MTColumn className="startup-results" width={20}>
-            <div>
-              <h2>Startup results</h2>
-              {this.state.loadingData}
-            </div>
-          </MTColumn>
-
-          <MTColumn className="dropped-file-results" width={20}>
-            <div>
-              <h2>Dropped file results</h2>
-              {items}
             </div>
           </MTColumn>
         </MTRow>

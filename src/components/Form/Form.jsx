@@ -5,6 +5,7 @@ export default class AddPlayer extends React.Component {
     super(props);
     this.state = {
       name: '',
+      scores: '',
     };
   }
 
@@ -16,8 +17,10 @@ export default class AddPlayer extends React.Component {
 
   addData = () => {
     this.props.onAdd(this.state.name);
+    this.props.onAdd(this.state.scores);
     this.setState({
       name: '',
+      scores: null,
     });
   };
 
@@ -49,9 +52,12 @@ export default class AddPlayer extends React.Component {
           type="text"
           placeholder="type here .."
         />
+
         <button style={styles.button} onClick={this.addData}>
           Add Data
         </button>
+        <br />
+        <br />
       </div>
     );
   }

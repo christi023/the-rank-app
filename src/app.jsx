@@ -4,6 +4,7 @@ import ExcelDropzone from './excel-dropzone.jsx';
 import users from './users';
 import scores from './scores';
 import Form from './components/Form/Form';
+//import Table from './components/Table/Table';
 //import utils from './components/utils/utils';
 // styles
 
@@ -14,6 +15,7 @@ export default class Main extends React.Component {
     this.state = {
       jsonData: '',
       loadingData: '',
+      userAdded: 'false',
     };
     // bind
     this.handleSheetData = this.handleSheetData.bind(this);
@@ -78,19 +80,51 @@ export default class Main extends React.Component {
 
   // adding  new data
   onDataAdd = (name) => {
-    let new_data = this.state.jsonData;
-    new_data.push({ _id: new_data.length + 1, name: name, score: 0 });
+    const new_data = this.state.loadingData;
+
+    let userId = new_data.length + 1;
+    new_data.push(<div key={userId}>{name + ' - ' + 0}</div>);
+    new_data
+      .sort(
+        (a, b) =>
+          a.props.children.split('-')[1].trimStart() - b.props.children.split('-')[1].trimStart(),
+      )
+      .reverse();
+
     this.setState({
-      jsonData: new_data,
+      loadingData: new_data,
+      userAdded: 'true',
     });
   };
 
+  // adding  new data
+  /*onDataAdd = (name) => {
+  let new_data = this.state.jsonData;
+  new_data.push({ _id: new_data.length + 1, name: name, score: 0 });
+  this.setState({
+    jsonData: new_data,
+  });
+};*/
+
   render() {
     let items;
+    let loadingItems;
     // check if jsonData is null if not return items with map function
     if (this.state.jsonData) {
       items = this.state.jsonData.map((data, key) => {
         return <div key={key}>{data.name + ' - ' + data.score}</div>;
+      });
+    }
+
+    if (this.state.loadingData) {
+      loadingItems = this.state.loadingData.map((data, key) => {
+        return (
+          <div key={key}>
+            {data.props.children.split('-')[0].trimStart() +
+              ' - ' +
+              data.props.children.split('-')[1].trimStart()}
+          </div>
+        );
       });
     }
 
@@ -136,15 +170,15 @@ export default class Main extends React.Component {
           <MTColumn className="startup-results" width={20}>
             <div>
               <h2>Startup results</h2>
-              {this.state.loadingData}
+              {loadingItems}
             </div>
           </MTColumn>
 
           <MTColumn className="dropped-file-results" width={20}>
-            <div>
+            <div className=" form-list">
               <Form onAdd={this.onDataAdd} />
               <br />
-              {items}
+              <div className="form-items">{items}</div>
             </div>
           </MTColumn>
         </MTRow>

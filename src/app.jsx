@@ -3,6 +3,7 @@ import { MTRow, MTColumn } from 'mt-ui';
 import ExcelDropzone from './excel-dropzone.jsx';
 import users from './users';
 import scores from './scores';
+import Form from './components/Form/Form';
 //import utils from './components/utils/utils';
 // styles
 
@@ -37,6 +38,18 @@ export default class Main extends React.Component {
     });
   }
 
+  /*sortAscending = () => {
+    const { jsonData } = this.state;
+    jsonData.sort((a, b) => a - b);
+    this.setState({ jsonData });
+  };
+
+  sortDescending = () => {
+    const { jsonData } = this.state;
+    jsonData.sort((a, b) => a - b).reverse();
+    this.setState({ jsonData });
+  };*/
+
   // handleSheetStartupData
   handleSheetStartupData() {
     let iniItems;
@@ -63,6 +76,15 @@ export default class Main extends React.Component {
     });
   }
 
+  // adding  new data
+  onDataAdd = (name) => {
+    let new_data = this.state.jsonData;
+    new_data.push({ _id: new_data.length + 1, name: name, score: 0 });
+    this.setState({
+      jsonData: new_data,
+    });
+  };
+
   render() {
     let items;
     // check if jsonData is null if not return items with map function
@@ -71,6 +93,7 @@ export default class Main extends React.Component {
         return <div key={key}>{data.name + ' - ' + data.score}</div>;
       });
     }
+
     return (
       <div className="container container--centered">
         <h1 className="m-t">Mediatool exercise</h1>
@@ -119,7 +142,8 @@ export default class Main extends React.Component {
 
           <MTColumn className="dropped-file-results" width={20}>
             <div>
-              <h2>Dropped file results</h2>
+              <Form onAdd={this.onDataAdd} />
+              <br />
               {items}
             </div>
           </MTColumn>

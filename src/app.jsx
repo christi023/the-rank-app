@@ -3,7 +3,7 @@ import { MTRow, MTColumn } from 'mt-ui';
 import ExcelDropzone from './excel-dropzone.jsx';
 import users from './users';
 import scores from './scores';
-import utils from './components/utils/utils';
+//import utils from './components/utils/utils';
 // styles
 
 export default class Main extends React.Component {
@@ -19,9 +19,22 @@ export default class Main extends React.Component {
     this.handleSheetStartupData = this.handleSheetStartupData.bind(this);
   }
 
+  // component did mount
+  componentDidMount() {
+    this.handleSheetStartupData();
+  }
+
   handleSheetData(data) {
     // replace this log with actual handling of the data
-    console.log(data);
+    //console.log(data);
+
+    // Sort data ascending or descending
+    data.sort((a, b) => a.score - b.score).reverse();
+
+    // Set data to jsonData state variable
+    this.setState({
+      jsonData: data,
+    });
   }
 
   // handleSheetStartupData
@@ -41,18 +54,23 @@ export default class Main extends React.Component {
 
     // Set highest scores
     this.setState({
-      loadingData: iniItems.sort(
-        (
-          a,
-          b, // render props takes children
-        ) =>
-          a.props.children.split('-')[1].trimStart() -
-          b.props.children.split('-')[1].trimStart().reverse(), // strip white spaces
-      ),
+      loadingData: iniItems
+        .sort(
+          (a, b) =>
+            a.props.children.split('-')[1].trimStart() - b.props.children.split('-')[1].trimStart(),
+        )
+        .reverse(),
     });
   }
 
   render() {
+    let items;
+    // check if jsonData is null if not return items with map function
+    if (this.state.jsonData) {
+      items = this.state.jsonData.map((data, key) => {
+        return <div key={key}>{data.name + ' - ' + data.score}</div>;
+      });
+    }
     return (
       <div className="container container--centered">
         <h1 className="m-t">Mediatool exercise</h1>
@@ -87,6 +105,22 @@ export default class Main extends React.Component {
                 </li>
                 <li>Width and offset is set in percent</li>
               </ul>
+            </div>
+          </MTColumn>
+        </MTRow>
+        <br />
+        <MTRow>
+          <MTColumn className="startup-results" width={20}>
+            <div>
+              <h2>Startup results</h2>
+              {this.state.loadingData}
+            </div>
+          </MTColumn>
+
+          <MTColumn className="dropped-file-results" width={20}>
+            <div>
+              <h2>Dropped file results</h2>
+              {items}
             </div>
           </MTColumn>
         </MTRow>

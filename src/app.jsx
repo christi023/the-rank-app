@@ -3,8 +3,10 @@ import { MTRow, MTColumn } from 'mt-ui';
 import ExcelDropzone from './excel-dropzone.jsx';
 import users from './users';
 import scores from './scores';
+//import Common from './components/Common/Common';
+
 import Form from './components/Form/Form';
-//import Table from './components/Table/Table';
+import Table from './components/Table/UserTable';
 //import utils from './components/utils/utils';
 // styles
 
@@ -16,6 +18,7 @@ export default class Main extends React.Component {
       jsonData: '',
       loadingData: '',
       userAdded: 'false',
+      edit: 'false',
     };
     // bind
     this.handleSheetData = this.handleSheetData.bind(this);
@@ -97,14 +100,8 @@ export default class Main extends React.Component {
     });
   };
 
-  // adding  new data
-  /*onDataAdd = (name) => {
-  let new_data = this.state.jsonData;
-  new_data.push({ _id: new_data.length + 1, name: name, score: 0 });
-  this.setState({
-    jsonData: new_data,
-  });
-};*/
+  // update score method
+  onScoreUpdate = () => {};
 
   render() {
     let items;
@@ -112,18 +109,18 @@ export default class Main extends React.Component {
     // check if jsonData is null if not return items with map function
     if (this.state.jsonData) {
       items = this.state.jsonData.map((data, key) => {
-        return <div key={key}>{data.name + ' - ' + data.score}</div>;
+        return <Table key={key}>{data.name + ' - ' + data.score}</Table>;
       });
     }
 
     if (this.state.loadingData) {
       loadingItems = this.state.loadingData.map((data, key) => {
         return (
-          <div key={key}>
+          <Table key={key}>
             {data.props.children.split('-')[0].trimStart() +
               ' - ' +
               data.props.children.split('-')[1].trimStart()}
-          </div>
+          </Table>
         );
       });
     }
@@ -167,7 +164,7 @@ export default class Main extends React.Component {
         </MTRow>
         <br />
         <MTRow>
-          <MTColumn className="startup-results" width={20}>
+          <MTColumn className="startup-results" width={70}>
             <div>
               <h2>Startup results</h2>
               {loadingItems}

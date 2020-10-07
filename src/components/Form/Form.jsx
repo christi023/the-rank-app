@@ -1,11 +1,10 @@
 import React from 'react';
 
-export default class AddPlayer extends React.Component {
+export default class Form extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       name: '',
-      scores: '',
     };
   }
 
@@ -17,10 +16,8 @@ export default class AddPlayer extends React.Component {
 
   addData = () => {
     this.props.onAdd(this.state.name);
-    this.props.onAdd(this.state.scores);
     this.setState({
       name: '',
-      scores: null,
     });
   };
 
@@ -44,18 +41,19 @@ export default class AddPlayer extends React.Component {
       },
     };
     return (
-      <div style={styles.container}>
+      <div>
+        <label>Name</label>
         <input
-          style={styles.input}
+          className="u-full-width"
           onChange={this.onDataChange}
           value={this.state.name}
           type="text"
-          placeholder="type here .."
+          placeholder="name - score"
         />
-
-        <button style={styles.button} onClick={this.addData}>
+        <button className="button-primary" onClick={this.addData}>
           Add Data
         </button>
+
         <br />
         <br />
       </div>

@@ -109,7 +109,7 @@ export default class Main extends React.Component {
     // check if jsonData is null if not return items with map function
     if (this.state.jsonData) {
       items = this.state.jsonData.map((data, key) => {
-        return <Table key={key}>{data.name + ' - ' + data.score}</Table>;
+        return <div key={key}>{data.name + ' - ' + data.score}</div>;
       });
     }
 

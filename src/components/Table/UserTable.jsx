@@ -12,10 +12,8 @@ const UserTable = (props) => {
       </thead>
       <tbody>
         <tr>
-          <td></td>
-          <td></td>
-          <td>{}</td>
-          <td></td>
+          <td>{props.children.split('-')[0].trimStart()}</td>
+          <td>{props.children.split('-')[1].trimStart()}</td>
           <td>
             <button onClick={() => props.deleteUser()}>Delete</button>
             <button onClick={() => props.editUser()}>Edit</button>

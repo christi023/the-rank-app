@@ -19,10 +19,10 @@ export default class Main extends React.Component {
       showDialog: 'false',
       emptyBox: 'false',
     };
-    // bind
+    // bindings
     this.handleSheetData = this.handleSheetData.bind(this);
     this.handleSheetStartupData = this.handleSheetStartupData.bind(this);
-    // this.onDataAdd = this.onDataAdd.bind(this);
+    this.onDataAdd = this.onDataAdd.bind(this);
     this.loadUserScores = this.loadUserScores.bind(this);
   }
 

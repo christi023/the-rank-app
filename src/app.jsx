@@ -3,12 +3,9 @@ import { MTRow, MTColumn } from 'mt-ui';
 import ExcelDropzone from './excel-dropzone.jsx';
 import users from './users';
 import scores from './scores';
-//import Common from './components/Common/Common';
+
 import Form from './components/Form/Form';
 import Table from './components/Table/UserTable';
-//import EditDataForm from './components/Form/EditDataForm';
-
-// styles
 
 export default class Main extends React.Component {
   constructor(props) {
@@ -17,13 +14,16 @@ export default class Main extends React.Component {
     this.state = {
       jsonData: '',
       loadingData: '',
+      userAllScoreData: '',
       userAdded: 'false',
-      //editing: 'false',
       setEditing: 'false',
+      showDialog: 'false',
     };
     // bind
     this.handleSheetData = this.handleSheetData.bind(this);
     this.handleSheetStartupData = this.handleSheetStartupData.bind(this);
+    // this.onDataAdd = this.onDataAdd.bind(this);
+    this.loadUserScores = this.loadUserScores.bind(this);
   }
 
   // component did mount
@@ -31,7 +31,7 @@ export default class Main extends React.Component {
     this.handleSheetStartupData();
   }
 
-  handleSheetData(data) {  
+  handleSheetData(data) {
     // Sort data ascending or descending
     data.sort((a, b) => a.score - b.score).reverse();
     // Set data to jsonData state variable
@@ -63,13 +63,13 @@ export default class Main extends React.Component {
         )
         .reverse(),
     });
-  }
+  } // adding  new data
 
   // adding  new data
-  onDataAdd = (name) => {
-    const new_data = this.state.loadingData;
+  /*  onDataAdd = (name) => {
+    const new_data = this.state.jsonData;
 
-    let userId = new_data.length + 1;
+    let userId = new_data && new_data.length + 1;
     new_data.push(<div key={userId}>{name + ' - ' + 0}</div>);
     new_data
       .sort(
@@ -79,33 +79,53 @@ export default class Main extends React.Component {
       .reverse();
 
     this.setState({
-      loadingData: new_data,
+      jsonData: new_data,
+      userAdded: 'true',
+    });
+  };*/
+
+  // adding data to table
+  onDataAdd = (value) => {
+    const new_data = this.state.jsonData;
+
+    // let userId = new_data.length + 1;
+    new_data.push({
+      name: value.split('-')[0].trim(),
+      score: value.split('-')[1].trim(),
+    });
+    new_data.sort((a, b) => a.score - b.score).reverse();
+
+    this.setState({
+      jsonData: new_data,
       userAdded: 'true',
     });
   };
 
-  // Edit function
-  /* onDataEdit = (name) => {
-    const new_data = this.state.loadingData;
+  // load users scores in order
+  loadUserScores = (userName) => {
+    const new_UserScores = { scores };
+    const new_Users = { users };
+    let userScoreData;
+    let user;
 
-    let userId = new_data.length + 1;
-    new_data.push(<div key={userId}>{name + ' - ' + 0}</div>);
-    new_data
-      .sort(
-        (a, b) =>
-          a.props.children.split('-')[1].trimStart() - b.props.children.split('-')[1].trimStart(),
-      )
-      .reverse();
+    user = new_Users.users.filter((user) => user.name === userName);
 
+    userScoreData = new_UserScores.scores.filter((scoreId) => scoreId.userId === user[0]._id);
+
+    userScoreData.sort((a, b) => a.score - b.score).reverse();
+    userScoreData.push(userName);
     this.setState({
-      loadingData: new_data,
-      setEditing: 'true',
+      userAllScoreData: userScoreData,
+      showDialog: 'true',
     });
-  };*/
+  };
 
   render() {
     let items;
     let loadingItems;
+    let userScoreItems;
+    let userAllScoreName;
+    let userAllScoreData;
     // check if jsonData is null if not return items with map function
     if (this.state.jsonData) {
       items = this.state.jsonData.map((data, key) => {
@@ -115,15 +135,14 @@ export default class Main extends React.Component {
 
     if (this.state.loadingData) {
       loadingItems = this.state.loadingData.map((data, key) => {
-        return (
-          <>
-            <Table key={key} props={data}>
-              {data.props.children.split('-')[0].trimStart() +
-                ' - ' +
-                data.props.children.split('-')[1].trimStart()}
-            </Table>
-          </>
-        );
+        return <Table key={key} props={{ data: data, met: this.loadUserScores }}></Table>;
+      });
+    }
+    if (this.state.userAllScoreData) {
+      userAllScoreData = this.state.userAllScoreData;
+      userAllScoreName = userAllScoreData.pop();
+      userScoreItems = userAllScoreData.map((data, key) => {
+        return <div key={key}>{data.score}</div>;
       });
     }
 
@@ -170,6 +189,13 @@ export default class Main extends React.Component {
             <div>
               <h2>Startup results</h2>
               {loadingItems}
+            </div>
+          </MTColumn>
+
+          <MTColumn className="startup-results" width={30}>
+            <div>
+              <h2>{userAllScoreName} All scores</h2>
+              {userScoreItems}
             </div>
           </MTColumn>
 

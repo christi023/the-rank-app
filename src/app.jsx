@@ -4,10 +4,10 @@ import ExcelDropzone from './excel-dropzone.jsx';
 import users from './users';
 import scores from './scores';
 //import Common from './components/Common/Common';
-
 import Form from './components/Form/Form';
 import Table from './components/Table/UserTable';
-//import utils from './components/utils/utils';
+//import EditDataForm from './components/Form/EditDataForm';
+
 // styles
 
 export default class Main extends React.Component {
@@ -18,7 +18,8 @@ export default class Main extends React.Component {
       jsonData: '',
       loadingData: '',
       userAdded: 'false',
-      edit: 'false',
+      //editing: 'false',
+      setEditing: 'false',
     };
     // bind
     this.handleSheetData = this.handleSheetData.bind(this);
@@ -30,30 +31,14 @@ export default class Main extends React.Component {
     this.handleSheetStartupData();
   }
 
-  handleSheetData(data) {
-    // replace this log with actual handling of the data
-    //console.log(data);
-
+  handleSheetData(data) {  
     // Sort data ascending or descending
     data.sort((a, b) => a.score - b.score).reverse();
-
     // Set data to jsonData state variable
     this.setState({
       jsonData: data,
     });
   }
-
-  /*sortAscending = () => {
-    const { jsonData } = this.state;
-    jsonData.sort((a, b) => a - b);
-    this.setState({ jsonData });
-  };
-
-  sortDescending = () => {
-    const { jsonData } = this.state;
-    jsonData.sort((a, b) => a - b).reverse();
-    this.setState({ jsonData });
-  };*/
 
   // handleSheetStartupData
   handleSheetStartupData() {
@@ -66,7 +51,6 @@ export default class Main extends React.Component {
 
       scoreData = scoreItems.scores.filter((scoreId) => scoreId.userId === user._id);
       maxResultUser = scoreData.sort((a, b) => a.score - b.score).reverse()[0];
-
       return <div key={key}>{user.name + ' - ' + maxResultUser.score}</div>;
     });
 
@@ -100,8 +84,24 @@ export default class Main extends React.Component {
     });
   };
 
-  // update score method
-  onScoreUpdate = () => {};
+  // Edit function
+  /* onDataEdit = (name) => {
+    const new_data = this.state.loadingData;
+
+    let userId = new_data.length + 1;
+    new_data.push(<div key={userId}>{name + ' - ' + 0}</div>);
+    new_data
+      .sort(
+        (a, b) =>
+          a.props.children.split('-')[1].trimStart() - b.props.children.split('-')[1].trimStart(),
+      )
+      .reverse();
+
+    this.setState({
+      loadingData: new_data,
+      setEditing: 'true',
+    });
+  };*/
 
   render() {
     let items;
@@ -116,11 +116,13 @@ export default class Main extends React.Component {
     if (this.state.loadingData) {
       loadingItems = this.state.loadingData.map((data, key) => {
         return (
-          <Table key={key}>
-            {data.props.children.split('-')[0].trimStart() +
-              ' - ' +
-              data.props.children.split('-')[1].trimStart()}
-          </Table>
+          <>
+            <Table key={key} props={data}>
+              {data.props.children.split('-')[0].trimStart() +
+                ' - ' +
+                data.props.children.split('-')[1].trimStart()}
+            </Table>
+          </>
         );
       });
     }
@@ -173,6 +175,7 @@ export default class Main extends React.Component {
 
           <MTColumn className="dropped-file-results" width={20}>
             <div className=" form-list">
+              <h2 style={{ paddingLeft: '2.2rem' }}>Add Data Here</h2>
               <Form onAdd={this.onDataAdd} />
               <br />
               <div className="form-items">{items}</div>

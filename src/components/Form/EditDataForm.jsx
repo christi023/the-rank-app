@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default class Form extends React.Component {
+export default class EditDataForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -14,8 +14,8 @@ export default class Form extends React.Component {
     });
   };
 
-  addData = () => {
-    this.props.onAdd(this.state.name);
+  editData = () => {
+    this.props.onEdit(this.state.name);
     this.setState({
       name: '',
     });
@@ -23,16 +23,16 @@ export default class Form extends React.Component {
 
   render() {
     return (
-      <div className="form">
+      <div>
         <input
-          className="form-input"
+          className="u-full-width"
           onChange={this.onDataChange}
           value={this.state.name}
           type="text"
-          placeholder="Add Data = name - score"
+          placeholder="name - score"
         />
-        <button className="btn-secondary" onClick={this.addData}>
-          Add Data
+        <button className="button-primary" onClick={this.editData}>
+          Edit Data
         </button>
 
         <br />

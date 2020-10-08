@@ -3,7 +3,6 @@ import { MTRow, MTColumn } from 'mt-ui';
 import ExcelDropzone from './excel-dropzone.jsx';
 import users from './users';
 import scores from './scores';
-
 import Form from './components/Form/Form';
 import Table from './components/Table/UserTable';
 
@@ -18,6 +17,7 @@ export default class Main extends React.Component {
       userAdded: 'false',
       setEditing: 'false',
       showDialog: 'false',
+      emptyBox: 'false',
     };
     // bind
     this.handleSheetData = this.handleSheetData.bind(this);
@@ -32,12 +32,35 @@ export default class Main extends React.Component {
   }
 
   handleSheetData(data) {
-    // Sort data ascending or descending
-    data.sort((a, b) => a.score - b.score).reverse();
-    // Set data to jsonData state variable
-    this.setState({
-      jsonData: data,
+    // Added functionality second method without duplicates
+    let items;
+    let filteredItems;
+    items = data.map((dataUser, key) => {
+      let findUser;
+      let userOneMaxScore;
+      findUser = data.filter((user) => user.name === dataUser.name);
+
+      if (findUser.length > 1) {
+        userOneMaxScore = findUser.sort((a, b) => a.score - b.score).reverse()[0];
+      } else {
+        userOneMaxScore = findUser;
+      }
+      return { name: userOneMaxScore.name, score: userOneMaxScore.score };
     });
+
+    filteredItems = items.filter(function (a) {
+      var key = a.name;
+      if (!this[key]) {
+        this[key] = true;
+        return true;
+      }
+    }, Object.create(null));
+
+    filteredItems.sort((a, b) => a.score - b.score).reverse();
+    this.setState({
+      jsonData: filteredItems,
+    });
+    // Added functionality
   }
 
   // handleSheetStartupData
@@ -53,7 +76,6 @@ export default class Main extends React.Component {
       maxResultUser = scoreData.sort((a, b) => a.score - b.score).reverse()[0];
       return <div key={key}>{user.name + ' - ' + maxResultUser.score}</div>;
     });
-
     // Set highest scores
     this.setState({
       loadingData: iniItems
@@ -63,42 +85,41 @@ export default class Main extends React.Component {
         )
         .reverse(),
     });
-  } // adding  new data
-
-  // adding  new data
-  /*  onDataAdd = (name) => {
-    const new_data = this.state.jsonData;
-
-    let userId = new_data && new_data.length + 1;
-    new_data.push(<div key={userId}>{name + ' - ' + 0}</div>);
-    new_data
-      .sort(
-        (a, b) =>
-          a.props.children.split('-')[1].trimStart() - b.props.children.split('-')[1].trimStart(),
-      )
-      .reverse();
-
-    this.setState({
-      jsonData: new_data,
-      userAdded: 'true',
-    });
-  };*/
-
+  }
   // adding data to table
   onDataAdd = (value) => {
-    const new_data = this.state.jsonData;
+    let userCheck;
+    if (value) {
+      const new_data = this.state.jsonData;
+      console.log(value);
 
-    // let userId = new_data.length + 1;
-    new_data.push({
-      name: value.split('-')[0].trim(),
-      score: value.split('-')[1].trim(),
-    });
-    new_data.sort((a, b) => a.score - b.score).reverse();
+      // Check if user exists
+      userCheck = new_data.filter((user) => user.name === value.split('-')[0].trim());
 
-    this.setState({
-      jsonData: new_data,
-      userAdded: 'true',
-    });
+      if (userCheck.length > 0) {
+        // Find index for user
+        let userIndex = new_data.findIndex((obj) => obj.name == value.split('-')[0].trim());
+        // Set user score
+        new_data[userIndex].score = value.split('-')[1].trim();
+      } else {
+        // If user do not exists add user
+        new_data.push({
+          name: value.split('-')[0].trim(),
+          score: value.split('-')[1].trim(),
+        });
+      }
+      // let userId = new_data.length + 1;
+      new_data.sort((a, b) => a.score - b.score).reverse();
+
+      this.setState({
+        jsonData: new_data,
+        userAdded: 'true',
+      });
+    } else {
+      this.setState({
+        emptyBox: 'true',
+      });
+    }
   };
 
   // load users scores in order
@@ -126,6 +147,11 @@ export default class Main extends React.Component {
     let userScoreItems;
     let userAllScoreName;
     let userAllScoreData;
+    let textInfo = '';
+
+    if (this.state.emptyBox === 'true') {
+      textInfo = 'No data entered';
+    }
     // check if jsonData is null if not return items with map function
     if (this.state.jsonData) {
       items = this.state.jsonData.map((data, key) => {
@@ -204,7 +230,7 @@ export default class Main extends React.Component {
               <h2 style={{ paddingLeft: '2.2rem' }}>Add Data Here</h2>
               <Form onAdd={this.onDataAdd} />
               <br />
-              <div className="form-items">{items}</div>
+              <div className="form-items">{items ? items : textInfo}</div>
             </div>
           </MTColumn>
         </MTRow>

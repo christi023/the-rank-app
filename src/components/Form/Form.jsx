@@ -6,6 +6,9 @@ export default class Form extends React.Component {
     this.state = {
       name: '',
     };
+    // binding
+    this.addData = this.addData.bind(this);
+    this.onDataChange = this.onDataChange.bind(this);
   }
 
   onDataChange = (event) => {

@@ -29,13 +29,12 @@ export default class Form extends React.Component {
   validate = (e) => {
     let error = '';
     if (!this.state.name) {
-      error = 'Data cannot be blank';
+      // error = 'Data cannot be blank';
     }
     if (error) {
       this.setState({ error });
       return false;
     }
-
     return true;
   };
 
@@ -50,16 +49,17 @@ export default class Form extends React.Component {
   };
 
   render() {
+    let { name, error } = this.state;
     return (
       <form className="form" onSubmit={this.handleSubmit}>
         <input
           className="form-input"
           onChange={this.onDataChange}
-          value={this.state.name}
+          value={name}
           type="text"
           placeholder="Add Data = name - score"
         />
-        <div style={{ fontSize: 12, color: 'red' }}>{this.state.error}</div>
+        <div style={{ fontSize: 12, color: 'red' }}>{error}</div>
         <button className="btn-secondary" onClick={this.addData}>
           Add Data
         </button>

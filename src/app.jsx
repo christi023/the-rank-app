@@ -33,26 +33,17 @@ export default class Main extends React.Component {
 
   handleSheetData(data) {
     // Added functionality second method without duplicates
-    let items;
-    let filteredItems;
-    items = data.map((dataUser, key) => {
-      let findUser;
-      let userOneMaxScore;
-      findUser = data.filter((user) => user.name === dataUser.name);
-
-      if (findUser.length > 1) {
-        userOneMaxScore = findUser.sort((a, b) => a.score - b.score).reverse()[0];
-      } else {
-        userOneMaxScore = findUser;
-      }
+    let items = data.map((dataUser, key) => {
+      let findUser = data.filter((user) => user.name === dataUser.name);
+      let userOneMaxScore =
+        findUser.length > 1 ? findUser.sort((a, b) => a.score - b.score).reverse()[0] : findUser;
       return { name: userOneMaxScore.name, score: userOneMaxScore.score };
     });
 
-    filteredItems = items.filter(function (a) {
-      var key = a.name;
+    let filteredItems = items.filter(function (a) {
+      let key = a.name;
       if (!this[key]) {
-        this[key] = true;
-        return true;
+        return (this[key] = true);
       }
     }, Object.create(null));
 
@@ -65,14 +56,12 @@ export default class Main extends React.Component {
 
   // handleSheetStartupData
   handleSheetStartupData() {
-    let iniItems;
+    // let iniItems;
     let scoreItems = { scores };
 
-    iniItems = users.map((user, key) => {
-      let scoreData;
+    let iniItems = users.map((user, key) => {
       let maxResultUser;
-
-      scoreData = scoreItems.scores.filter((scoreId) => scoreId.userId === user._id);
+      let scoreData = scoreItems.scores.filter((scoreId) => scoreId.userId === user._id);
       maxResultUser = scoreData.sort((a, b) => a.score - b.score).reverse()[0];
       return <div key={key}>{user.name + ' - ' + maxResultUser.score}</div>;
     });
@@ -95,10 +84,9 @@ export default class Main extends React.Component {
 
       // Check if user exists
       userCheck = new_data.filter((user) => user.name === value.split('-')[0].trim());
-
       if (userCheck.length > 0) {
         // Find index for user
-        let userIndex = new_data.findIndex((obj) => obj.name == value.split('-')[0].trim());
+        let userIndex = new_data.findIndex((obj) => obj.name === value.split('-')[0].trim());
         // Set user score
         new_data[userIndex].score = value.split('-')[1].trim();
       } else {
@@ -122,16 +110,65 @@ export default class Main extends React.Component {
     }
   };
 
+  // adding data to table
+  /*onDataAdd = (value) => {
+   if (value) {
+     const new_data = this.state.jsonData;
+
+     switch (new_data) {
+       case false:
+         console.log('false');
+         break;
+       case '':
+         console.log('empty string');
+         alert('Drop your file first');
+         break;
+       case null:
+         console.log(null);
+         break;
+       case undefined:
+         console.log('undefined');
+         break;
+       case 0:
+         console.log('0');
+         break;
+       default:
+         this.addUserList = (new_data, value);
+         break;
+     }
+   } else {
+   }
+ };
+
+ addUserList = (new_data, value) => {
+   // If user do not exists add user
+   new_data.push({
+     name: value.split('-')[0].trim(),
+     score: value.split('-')[1].trim(),
+   });
+
+   // let userId = new_data.length + 1;
+   new_data.sort((a, b) => a.score - b.score).reverse();
+
+   this.setState({
+     jsonData: new_data,
+     userAdded: 'true',
+   });
+ };*/
+  /*else {
+    this.setState({
+      emptyBox: 'true'
+    });
+  }*/
+
   // load users scores in order
   loadUserScores = (userName) => {
     const new_UserScores = { scores };
     const new_Users = { users };
-    let userScoreData;
-    let user;
 
-    user = new_Users.users.filter((user) => user.name === userName);
+    let user = new_Users.users.filter((user) => user.name === userName);
 
-    userScoreData = new_UserScores.scores.filter((scoreId) => scoreId.userId === user[0]._id);
+    let userScoreData = new_UserScores.scores.filter((scoreId) => scoreId.userId === user[0]._id);
 
     userScoreData.sort((a, b) => a.score - b.score).reverse();
     userScoreData.push(userName);
@@ -148,19 +185,20 @@ export default class Main extends React.Component {
     let userAllScoreName;
     let userAllScoreData;
     let textInfo = '';
+    let { loadingData, jsonData, emptyBox } = this.state;
 
-    if (this.state.emptyBox === 'true') {
+    if (emptyBox === 'true') {
       textInfo = 'No data entered';
     }
     // check if jsonData is null if not return items with map function
-    if (this.state.jsonData) {
-      items = this.state.jsonData.map((data, key) => {
+    if (jsonData) {
+      items = jsonData.map((data, key) => {
         return <div key={key}>{data.name + ' - ' + data.score}</div>;
       });
     }
 
-    if (this.state.loadingData) {
-      loadingItems = this.state.loadingData.map((data, key) => {
+    if (loadingData) {
+      loadingItems = loadingData.map((data, key) => {
         return <Table key={key} props={{ data: data, met: this.loadUserScores }}></Table>;
       });
     }

@@ -108,58 +108,62 @@ export default class Main extends React.Component {
         emptyBox: 'true',
       });
     }
-  };
+  }; // load users scores in order
 
   // adding data to table
   /*onDataAdd = (value) => {
-   if (value) {
-     const new_data = this.state.jsonData;
+    if (value) {
+      const new_data = this.state.jsonData;
 
-     switch (new_data) {
-       case false:
-         console.log('false');
-         break;
-       case '':
-         console.log('empty string');
-         alert('Drop your file first');
-         break;
-       case null:
-         console.log(null);
-         break;
-       case undefined:
-         console.log('undefined');
-         break;
-       case 0:
-         console.log('0');
-         break;
-       default:
-         this.addUserList = (new_data, value);
-         break;
-     }
-   } else {
-   }
- };
+      switch (new_data) {
+        case false:
+          console.log('false');
+          break;
+        case '':
+          console.log('empty string');
+          alert('Drop your file first');
+          break;
+        case null:
+          console.log(null);
+          break;
+        case undefined:
+          console.log('undefined');
+          break;
+        case 0:
+          console.log('0');
+          break;
+        default:
+          this.addUserList = (new_data, value);
+          break;
+      }
+    } else {
+    }
+  };
+  addUserList = (new_data, value) => {
+    // If user do not exists add user
+    new_data.push({
+      name: value.split('-')[0].trim(),
+      score: value.split('-')[1].trim(),
+    });
 
- addUserList = (new_data, value) => {
-   // If user do not exists add user
-   new_data.push({
-     name: value.split('-')[0].trim(),
-     score: value.split('-')[1].trim(),
-   });
+    // let userId = new_data.length + 1;
+    new_data.sort((a, b) => a.score - b.score).reverse();
 
-   // let userId = new_data.length + 1;
-   new_data.sort((a, b) => a.score - b.score).reverse();
+    this.setState({
+      jsonData: new_data,
+      userAdded: 'true',
+    })
+  }
+ else{
+  this.setState({
+    emptyBox: true
+  })
+}*/
 
-   this.setState({
-     jsonData: new_data,
-     userAdded: 'true',
-   });
- };*/
   /*else {
     this.setState({
       emptyBox: 'true'
-    });
-  }*/
+    });*/
 
   // load users scores in order
   loadUserScores = (userName) => {
@@ -199,7 +203,9 @@ export default class Main extends React.Component {
 
     if (loadingData) {
       loadingItems = loadingData.map((data, key) => {
-        return <Table key={key} props={{ data: data, met: this.loadUserScores }}></Table>;
+        return (
+          <Table key={key} props={{ data: data.props.children, met: this.loadUserScores }}></Table>
+        );
       });
     }
     if (this.state.userAllScoreData) {
@@ -249,23 +255,23 @@ export default class Main extends React.Component {
         </MTRow>
         <br />
         <MTRow>
-          <MTColumn className="startup-results" width={70}>
-            <div>
+          <MTColumn className="startup-results">
+            <div className="results">
               <h2>Startup results</h2>
               {loadingItems}
             </div>
           </MTColumn>
 
-          <MTColumn className="startup-results" width={30}>
+          <MTColumn className="startup-scores" width={30}>
             <div>
-              <h2>{userAllScoreName} All scores</h2>
+              <h2 className="header-scores">{userAllScoreName} All scores</h2>
               {userScoreItems}
             </div>
           </MTColumn>
 
           <MTColumn className="dropped-file-results" width={20}>
             <div className=" form-list">
-              <h2 style={{ paddingLeft: '2.2rem' }}>Add Data Here</h2>
+              <h2 style={{ paddingLeft: '2.2rem' }}>Drop File First</h2>
               <Form onAdd={this.onDataAdd} />
               <br />
               <div className="form-items">{items ? items : textInfo}</div>

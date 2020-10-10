@@ -1,0 +1,44 @@
+/* -------- Form ---------------- */
+.form {
+  margin-top: 10px;
+}
+.form-input {
+  width: 175px;
+}
+
+.form-items {
+  background-color: lightblue;
+  border: 1px solid black;
+  margin: 0px 15px;
+  padding: 15px 15px;
+}
+
+.btn-secondary {
+  margin-left: 2em;
+  margin-top: 10px;
+  margin-left: 3em;
+  background-color: aquamarine;
+}
+
+/* -------- mobile ----------- */
+@media only screen and (max-width: 600px) {
+  h2 {
+    font-size: 2rem;
+    margin-top: 2rem;
+    letter-spacing: none;
+    color: blueviolet;
+  }
+  .form-input {
+    width: 185px;
+    margin-left: 20px;
+    font-size: 1.4rem;
+  }
+  .form-items {
+    width: 185px;
+    margin-left: 20px;
+  }
+  .btn-secondary {
+    width: 155px;
+    margin-left: 35px;
+  }
+}

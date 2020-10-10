@@ -4,7 +4,7 @@ import ExcelDropzone from './excel-dropzone.jsx';
 import users from './users';
 import scores from './scores';
 import Form from './components/Form/Form';
-import Table from './components/Table/UserTable';
+import Table from './components/Table/Table';
 
 export default class Main extends React.Component {
   constructor(props) {

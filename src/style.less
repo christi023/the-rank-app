@@ -1,5 +1,9 @@
 @import '~mt-ui/lib/style.less';
 
+* {
+  padding: 0;
+  margin-left: 10px;
+}
 .excel-dropzone__label {
   text-align: center;
   padding-top: 90px;
@@ -13,34 +17,72 @@
   float: left;
 }
 
-/* -------- Form ---------------- */
-.form {
-  margin-top: 10px;
-}
-.form-input {
-  width: 175px;
-}
-
-.form-items {
-  background-color: lightblue;
-  border: 1px solid black;
-  margin: 0px 15px;
-  padding: 15px 15px;
+/*----------------- Media Queries --------------------- */
+@media screen and (max-width: 991px) {
+  .container {
+    padding-right: 30px;
+    padding-left: 30px;
+  }
 }
 
-.btn-secondary {
-  margin-left: 2em;
-  margin-top: 10px;
-  margin-left: 3em;
-  background-color: aquamarine;
+@media screen and (max-width: 768px) {
+  .col {
+    max-width: 100%;
+    flex-basis: 100%;
+  }
 }
-/*-------------- Edit Data Form  ---------------- */
-.u-full-width {
-  width: 160px;
-  margin-top: 2rem;
-  margin-bottom: 1rem;
-  padding-top: 1rem;
-}
-.button-primary {
-  margin-left: 6em;
+/*----------- mobile ------------------ */
+@media only screen and (max-width: 600px) {
+  body {
+    background-color: lightblue;
+  }
+  .startup-results {
+    width: 70%;
+  }
+  .results {
+    font-size: 1.3rem;
+    width: 100%;
+  }
+  .dropped-file-results {
+    display: grid;
+  }
+  .container {
+    display: block;
+    //width: 100%;
+    align-self: center;
+    align-items: center;
+    align-content: center;
+  }
+  .button-primary {
+    margin-left: 6px;
+    width: 10rem;
+    margin-right: 5px;
+    font-size: 1rem;
+  }
+  .mt-row.mt-row--stretch {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+  }
+  .mt-row {
+    display: block;
+    padding: 0px;
+    //width: 40%;
+    flex-direction: row;
+    margin-left: -1rem;
+    font-size: 1.1em;
+    width: calc(100% + 1rem);
+    align-self: center;
+  }
+  .startup-scores,
+  h1 {
+    max-width: 30%;
+    margin-left: 0px;
+    align-self: center;
+    display: block;
+    flex: 1 1 auto;
+    margin-left: 0;
+    width: 30%;
+    margin-bottom: inherit;
+  }
 }

@@ -2,7 +2,7 @@
 
 * {
   padding: 0;
-  margin-left: 10px;
+  margin-left: 5px;
 }
 .excel-dropzone__label {
   text-align: center;
@@ -19,16 +19,73 @@
 
 /*----------------- Media Queries --------------------- */
 @media screen and (max-width: 991px) {
-  .container {
-    padding-right: 30px;
-    padding-left: 30px;
-  }
 }
 
 @media screen and (max-width: 768px) {
-  .col {
+  body {
+    background-color: pink;
+  }
+  .startup-results {
+    width: 100%;
+  }
+  .results {
+    font-size: 2rem;
+    width: 100%;
+  }
+  .dropped-file-results {
+    display: grid;
+    width: 60%;
+  }
+  .container {
+    display: block;
+    width: 90%;
+    align-self: center;
+    align-items: center;
+    align-content: center;
+  }
+  .button-primary {
+    margin-left: 4px;
+    width: 19rem;
+    margin-right: 5px;
+    font-size: 2rem;
+  }
+  .mt-row.mt-row--stretch {
+    display: block;
+  }
+
+  .mt-row .mt-column--auto {
+    flex: 1 1 auto;
+    margin-left: 10px;
+    //max-width: 50%;
+    width: 100%;
+    margin-bottom: inherit;
+  }
+  .mt-row .mt-column {
+    flex: 1 1 auto;
+    margin-left: 0;
+    max-width: 50%;
+    width: 100%;
+    margin-bottom: inherit;
+  }
+  .mt-row {
+    display: block;
+    padding: 50px;
+    width: 90%;
+    flex-direction: row;
+    margin-left: 7rem;
+    font-size: 1.4em;
+    align-self: center;
+  }
+  .startup-scores,
+  h1 {
     max-width: 100%;
-    flex-basis: 100%;
+    margin-left: 10px;
+    align-self: center;
+    display: block;
+    flex: 1 1 auto;
+    margin-left: 0;
+    width: 90%;
+    margin-bottom: inherit;
   }
 }
 /*----------- mobile ------------------ */

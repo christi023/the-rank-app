@@ -215,7 +215,7 @@ export default class Main extends React.Component {
 
           <MTColumn className="dropped-file-results" width={20}>
             <div className=" form-list">
-              <h2 style={{ paddingLeft: '2.2rem' }}>Drop File First</h2>
+              <h2 style={{ paddingLeft: '2.2rem' }}>Drop File First and Add Data</h2>
               <Form onAdd={this.onDataAdd} />
               <br />
               <div className="form-items">{items ? items : textInfo}</div>

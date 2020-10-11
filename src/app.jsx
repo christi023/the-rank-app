@@ -3,6 +3,7 @@ import { MTRow, MTColumn } from 'mt-ui';
 import ExcelDropzone from './excel-dropzone.jsx';
 import users from './users';
 import scores from './scores';
+// Components
 import Form from './components/Form/Form';
 import Table from './components/Table/Table';
 
@@ -51,7 +52,6 @@ export default class Main extends React.Component {
     this.setState({
       jsonData: filteredItems,
     });
-    // Added functionality
   }
 
   // handleSheetStartupData
@@ -75,13 +75,12 @@ export default class Main extends React.Component {
         .reverse(),
     });
   }
+
   // adding data to table
   onDataAdd = (value) => {
     let userCheck;
     if (value) {
       const new_data = this.state.jsonData;
-      console.log(value);
-
       // Check if user exists
       userCheck = new_data.filter((user) => user.name === value.split('-')[0].trim());
       if (userCheck.length > 0) {
@@ -108,62 +107,7 @@ export default class Main extends React.Component {
         emptyBox: 'true',
       });
     }
-  }; // load users scores in order
-
-  // adding data to table
-  /*onDataAdd = (value) => {
-    if (value) {
-      const new_data = this.state.jsonData;
-
-      switch (new_data) {
-        case false:
-          console.log('false');
-          break;
-        case '':
-          console.log('empty string');
-          alert('Drop your file first');
-          break;
-        case null:
-          console.log(null);
-          break;
-        case undefined:
-          console.log('undefined');
-          break;
-        case 0:
-          console.log('0');
-          break;
-        default:
-          this.addUserList = (new_data, value);
-          break;
-      }
-    } else {
-    }
   };
-  addUserList = (new_data, value) => {
-    // If user do not exists add user
-    new_data.push({
-      name: value.split('-')[0].trim(),
-      score: value.split('-')[1].trim(),
-    });
-
-    // let userId = new_data.length + 1;
-    new_data.sort((a, b) => a.score - b.score).reverse();
-
-    this.setState({
-      jsonData: new_data,
-      userAdded: 'true',
-    })
-  }
- else{
-  this.setState({
-    emptyBox: true
-  })
-}*/
-
-  /*else {
-    this.setState({
-      emptyBox: 'true'
-    });*/
 
   // load users scores in order
   loadUserScores = (userName) => {

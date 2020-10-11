@@ -13,6 +13,7 @@ export default class Form extends React.Component {
     this.addData = this.addData.bind(this);
     this.onDataChange = this.onDataChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.validate = this.validate.bind(this);
   }
 
   onDataChange = (event) => {
@@ -31,7 +32,6 @@ export default class Form extends React.Component {
   validate = (e) => {
     let error = '';
     if (!this.state.name) {
-      // error = 'Data cannot be blank';
     }
     if (error) {
       this.setState({ error });
@@ -44,7 +44,7 @@ export default class Form extends React.Component {
     event.preventDefault();
     const isValid = this.validate(event);
     if (isValid) {
-      console.log(this.state);
+      //  console.log(this.state);
       // clear form
       this.setState(this.state);
     }
@@ -65,7 +65,6 @@ export default class Form extends React.Component {
         <button className="btn-secondary" onClick={this.addData}>
           Add Data
         </button>
-
         <br />
         <br />
       </form>
